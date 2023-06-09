@@ -136,7 +136,8 @@ fabric.properties
 # AWS User-specific
 
 # Generated files
-
+ags-backend/node_modules
+ags-frontend/node_modules
 # Sensitive or high-churn files
 
 # Gradle
