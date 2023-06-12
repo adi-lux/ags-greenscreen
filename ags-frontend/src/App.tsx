@@ -11,6 +11,7 @@ interface LocationInfo {
     city: string
 }
 const kelvinToFahrenheit = (kel: number) => (9/5 * (kel - 273.15) + 32).toFixed(1)
+const celsiusToFahrenehit = (cel: number) => ((9/5 * cel  + 32).toFixed(1))
 function App() {
     const geolocation: Geolocation = navigator.geolocation;
     const [location, setLocation] = useState<Location>({
@@ -55,14 +56,12 @@ function App() {
             <h1>Anteater Green Screen</h1>
             <p>
                 Current Location: {locationInfo.city}</p>
-
             <p>Average Temperature: {kelvinToFahrenheit(locationInfo.average_temperature)}° F</p>
             <div className="card">
-
-                <button onClick={() => setTemp((count) => count + 1)}>
-                    temperature is {temp}
+                <button>
+                    temperature is {celsiusToFahrenehit(locationInfo.average_temperature)}
                 </button>
-                <button onClick={() => setHumidity((count) => count + 1)}>
+                <button>
                     humidity is {humidity}
                 </button>
             </div>
