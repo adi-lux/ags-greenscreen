@@ -37,6 +37,21 @@ app.get('/', (req, res) => {
         Select: "ALL_ATTRIBUTES",
         ConsistentRead: true,
     })
+
+    let items;
+    docClient.send(command).then((res)=> {
+        items = res.Items;
+    })
+
+    let temp = 0;
+    let hum = 0;
+    let aq = 0;
+
+    res.send({
+        temperature: temp,
+        humidity: hum,
+        air_quality: aq
+    })
 })
 
 app.get('/avg', (req,res) => {
