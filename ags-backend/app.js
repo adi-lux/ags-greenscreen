@@ -30,7 +30,16 @@ app.post('/', (req, res) => {
 
 })
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
+    const command = new ScanCommand({
+        TableName: "SensorMetrics",
+        Limit: 1,
+        Select: "ALL_ATTRIBUTES",
+        ConsistentRead: true,
+    })
+})
+
+app.get('/avg', (req,res) => {
     const command = new ScanCommand({
         TableName: "SensorMetrics",
         Select: "ALL_ATTRIBUTES",
