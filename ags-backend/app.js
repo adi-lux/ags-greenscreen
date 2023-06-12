@@ -15,10 +15,10 @@ app.post('/', (req, res) => {
     const params = {
         TableName: 'SensorMetrics',
         Item: {
-            'Timestamp': {N: (new Date()).getTime().toString()},
-            'Temperature': {N: req.body.temp.toString()},
-            'Humidity': {N: req.body.hum.toString()},
-            'AirQuality': {N: req.body.aq.toString()},
+            'Timestamp': (new Date()).getTime().toString(),
+            'Temperature': req.body.temp.toString(),
+            'Humidity': req.body.hum.toString(),
+            'AirQuality': req.body.aq.toString(),
         }
     }
 
