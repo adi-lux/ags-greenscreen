@@ -146,7 +146,7 @@ ags-frontend/node_modules
 # When using Gradle or Maven with auto-import, you should exclude module files,
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
-# .idea/artifacts
+# .i/dea/artifacts
 # .idea/compiler.xml
 # .idea/jarRepositories.xml
 # .idea/modules.xml
@@ -177,3 +177,4 @@ ags-frontend/node_modules
 
 # Android studio 3.1+ serialized cache file
 
+venv/
