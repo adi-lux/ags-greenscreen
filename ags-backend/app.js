@@ -1,6 +1,6 @@
 import express from 'express'
 import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
-import {PutCommand, DynamoDBDocumentClient, ScanCommand} from "@aws-sdk/lib-dynamodb"
+import {PutCommand, DynamoDBDocumentClient, ScanCommand, QueryCommand} from "@aws-sdk/lib-dynamodb"
 const app = express()
 const port = 3000
 const dbClient = new DynamoDBClient({region: 'us-west-2'})
@@ -30,27 +30,27 @@ app.post('/', (req, res) => {
 
 })
 
-app.get('/', (req, res) => {
-    const command = new ScanCommand({
+app.get('/', async (req, res) => {
+    const command = new QueryCommand({
         TableName: "SensorMetrics",
         Limit: 1,
         Select: "ALL_ATTRIBUTES",
         ConsistentRead: true,
+        ScanIndexForward: true,
     })
 
-    let items;
-    docClient.send(command).then((res)=> {
-        items = res.Items;
-    })
-    console.log(items);
+    const {Items} = await docClient.send(command)
+    console.log(Items);
 
-    let temp = 0;
-    let hum = 0;
-    let aq = 0;
-
-    temp = items.Temperature;
-    hum = items.Humidity;
-    aq = items.AirQuality;
+    let temp;
+    let hum;
+    let aq;
+    // Is only length 1 so should work
+    for (const i of Items) {
+        temp = i.Temperature;
+        hum = i.Humidity;
+        aq = i.AirQuality;
+    }
 
     res.send({
         temperature: temp,
@@ -59,24 +59,22 @@ app.get('/', (req, res) => {
     })
 })
 
-app.get('/avg', (req,res) => {
+app.get('/avg', async (req,res) => {
     const command = new ScanCommand({
         TableName: "SensorMetrics",
         Select: "ALL_ATTRIBUTES",
         ConsistentRead: true
     })
 
-    let items;
-    docClient.send(command).then((res) => {
-        items = res.Items
-    })
-    console.log(items);
+    const {Items} = await docClient.send(command)
+
+    console.log(Items);
     let totalTemp = 0;
     let totalHum = 0;
     let totalAQ = 0;
     let total = 0
 
-    for (const i of items) {
+    for (const i of Items) {
         totalTemp += i.Temperature;
         totalHum += i.Humidity;
         totalAQ += i.AirQuality;
@@ -91,8 +89,6 @@ app.get('/avg', (req,res) => {
         average_humidity: avg_hum,
         average_air_quality: avg_aq
     })
-
-
 })
 
 app.listen(port, () => {
