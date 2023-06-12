@@ -15,7 +15,7 @@ app.post('/', (req, res) => {
     const params = {
         TableName: 'SensorMetrics',
         Item: {
-            'Timestamp': (new Date()).getTime(),
+            'Timestamp': (new Date()).getTime().toString(),
             'Temperature': req.body.temp,
             'Humidity': req.body.hum,
             'AirQuality': req.body.aq,
@@ -42,6 +42,7 @@ app.get('/', (req, res) => {
     docClient.send(command).then((res)=> {
         items = res.Items;
     })
+    console.log(items);
 
     let temp = 0;
     let hum = 0;
@@ -69,6 +70,7 @@ app.get('/avg', (req,res) => {
     docClient.send(command).then((res) => {
         items = res.Items
     })
+    console.log(items);
     let totalTemp = 0;
     let totalHum = 0;
     let totalAQ = 0;
