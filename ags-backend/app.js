@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
 import {PutCommand, DynamoDBDocumentClient, ScanCommand, QueryCommand} from "@aws-sdk/lib-dynamodb"
 const app = express()
@@ -12,7 +13,7 @@ let globalRecent = {
     recent_air_quality: 0
 }
 app.use(express.json());
-
+app.use(cors())
 app.post('/', (req, res) => {
 
     globalRecent.recent_temperature = req.body.temp
@@ -22,7 +23,7 @@ app.post('/', (req, res) => {
     const params = {
         TableName: 'SensorMetrics',
         Item: {
-            'Timestamp': (new Date()).getTime().toString(),
+            'Timestamp': (new Date()).getTime(),
             'Temperature': req.body.temp,
             'Humidity': req.body.hum,
             'AirQuality': req.body.aq,
