@@ -3,6 +3,11 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+
+}
+
+.title-screen {
+  color: #0e2d08;
 }
 
 .logo {
@@ -35,8 +40,19 @@
 
 .card {
   padding: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .read-the-docs {
   color: #FFF;
+}
+
+.background-suggestions {
+  background-color: #e7ffe4;
+  margin: 20px;
+  padding: 20px;
+  box-shadow: 0 0 2px;
+  border-radius: 25px;
 }
