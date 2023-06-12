@@ -6,12 +6,19 @@ const port = 3000
 const dbClient = new DynamoDBClient({region: 'us-west-2'})
 const docClient = DynamoDBDocumentClient.from(dbClient)
 
+let globalRecent = {
+    recent_temperature: 0,
+    recent_humidity: 0,
+    recent_air_quality: 0
+}
 app.use(express.json());
 
 app.post('/', (req, res) => {
 
-    const {body} = req
-    console.log(body)
+    globalRecent.recent_temperature = req.body.temp
+    globalRecent.recent_humidity = req.body.hum
+    globalRecent.recent_air_quality = req.body.aq
+
     const params = {
         TableName: 'SensorMetrics',
         Item: {
@@ -31,32 +38,7 @@ app.post('/', (req, res) => {
 })
 
 app.get('/', async (req, res) => {
-    const command = new QueryCommand({
-        TableName: "SensorMetrics",
-        Limit: 1,
-        Select: "ALL_ATTRIBUTES",
-        ConsistentRead: true,
-        ScanIndexForward: true,
-    })
-
-    const {Items} = await docClient.send(command)
-    console.log(Items);
-
-    let temp;
-    let hum;
-    let aq;
-    // Is only length 1 so should work
-    for (const i of Items) {
-        temp = i.Temperature;
-        hum = i.Humidity;
-        aq = i.AirQuality;
-    }
-
-    res.send({
-        temperature: temp,
-        humidity: hum,
-        air_quality: aq
-    })
+    res.send(globalRecent)
 })
 
 app.get('/avg', async (req,res) => {

@@ -7,22 +7,46 @@ interface Location {
 }
 
 interface LocationInfo {
-    average_temperature: number,
+    local_temperature: number,
     city: string
 }
+
+interface AverageWeatherInfo {
+    average_temperature: number,
+    average_humidity: number,
+    average_air_quality: number,
+}
+
+interface RecentWeatherInfo {
+    recent_temperature: number,
+    recent_humidity: number,
+    recent_air_quality: number
+}
+
 const kelvinToFahrenheit = (kel: number) => (9/5 * (kel - 273.15) + 32).toFixed(1)
 const celsiusToFahrenehit = (cel: number) => ((9/5 * cel  + 32).toFixed(1))
 function App() {
+    const recentLink = "http://34.216.20.120:3000"
+    const averageLink = `${serverLink}/avg`
     const geolocation: Geolocation = navigator.geolocation;
     const [location, setLocation] = useState<Location>({
         longitude: 0,
         latitude: 0,
     });
-    const [temp, setTemp] = useState(0);
-    const [humidity, setHumidity] = useState(0);
     const [locationInfo, setLocationInfo] = useState<LocationInfo>({
-        average_temperature: 0,
+        local_temperature: 0,
         city: "Irvine",
+    })
+
+    const [average, setAverage] = useState<AverageWeatherInfo>({
+        average_temperature: 0,
+        average_air_quality: 0,
+        average_humidity: 0
+    })
+    const [recent, setRecent] = useState<RecentWeatherInfo>({
+        recent_temperature: 0,
+        recent_air_quality: 0,
+        recent_humidity: 0
     })
 
     useEffect(() => {
@@ -44,7 +68,7 @@ function App() {
                 .then((weather) => {
                     console.log(weather);
                     setLocationInfo({
-                        average_temperature: weather.main.temp,
+                        local_temperature: weather.main.temp,
                         city: weather.name
                     })
                 })
@@ -52,7 +76,15 @@ function App() {
     }, [location])
 
     useEffect(() => {
+        fetch(recentLink)
+            .then((res) => res.json())
+            .then((recentInfo) => setRecent(recentInfo))
+    }, [])
 
+    useEffect(() => {
+        fetch(averageLink)
+            .then((res) => res.json())
+            .then((averageInfo) )
     })
     return (
         <>
@@ -60,10 +92,10 @@ function App() {
                 <h1>Anteater GreenScreen</h1>
             </header>
             <p>Current Location: {locationInfo.city}</p>
-            <p>Average Temperature: {kelvinToFahrenheit(locationInfo.average_temperature)}° F</p>
+            <p>Average Temperature: {kelvinToFahrenheit(locationInfo.local_temperature)}° F</p>
             <div className="card">
                 <button>
-                    temperature is {celsiusToFahrenehit(locationInfo.average_temperature)}
+                    temperature is {2}
                 </button>
                 <button>
                     humidity is {humidity}
