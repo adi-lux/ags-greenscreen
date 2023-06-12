@@ -229,6 +229,7 @@ void setup() {
 
 
 void loop() {
+  Serial.println(digitalRead(PUSH_PIN));
   if (digitalRead(PUSH_PIN) == LOW) {
 
     RoomMetrics metrics = readAndCalibrateMetrics();
@@ -242,5 +243,4 @@ void loop() {
 
     sendMetricsToEndpoint(metrics);
   }
-  delay(3000);
 }

@@ -47,6 +47,10 @@ app.get('/', (req, res) => {
     let hum = 0;
     let aq = 0;
 
+    temp = items.Temperature;
+    hum = items.Humidity;
+    aq = items.AirQuality;
+
     res.send({
         temperature: temp,
         humidity: hum,
