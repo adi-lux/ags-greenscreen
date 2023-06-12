@@ -2,12 +2,13 @@ import express from 'express'
 import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
 import {PutCommand, DynamoDBDocumentClient} from "@aws-sdk/lib-dynamodb"
 const app = express()
-const router = express.Router();
 const port = 3000
 const dbClient = new DynamoDBClient({region: 'us-west-2'})
 const docClient = DynamoDBDocumentClient.from(dbClient)
 
-router.post('/', (req, res) => {
+app.use(express.json());
+
+app.post('/', (req, res) => {
 
     const {body} = req
     console.log(body)
@@ -29,11 +30,10 @@ router.post('/', (req, res) => {
 
 })
 
-router.get('/', (req,res) => {
+app.get('/', (req,res) => {
 
 })
 
-app.use('/', router)
 app.listen(port, () => {
     console.log(`Example listening on port ${port}`)
 })
