@@ -9,6 +9,8 @@ const docClient = DynamoDBDocumentClient.from(dbClient)
 
 router.post('/', (req, res) => {
 
+    const {body} = req
+    console.log(body)
     const params = {
         TableName: 'SensorMetrics',
         Item: {
@@ -23,7 +25,7 @@ router.post('/', (req, res) => {
     docClient.send(updateCommand)
              .then((res) => console.log(res))
 
-    res.send(`Logged temperature: ${req.query.temp}, humidity: ${req.query.hum}, air quality: ${req.query.aq}`)
+    res.send(`Logged temperature: ${req.body.temp}, humidity: ${req.body.hum}, air quality: ${req.body.aq}`)
 
 })
 

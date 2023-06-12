@@ -51,11 +51,15 @@ function App() {
         }
     }, [location])
 
+    useEffect(() => {
+
+    })
     return (
         <>
-            <h1>Anteater Green Screen</h1>
-            <p>
-                Current Location: {locationInfo.city}</p>
+            <header className="title-screen">
+                <h1>Anteater GreenScreen</h1>
+            </header>
+            <p>Current Location: {locationInfo.city}</p>
             <p>Average Temperature: {kelvinToFahrenheit(locationInfo.average_temperature)}° F</p>
             <div className="card">
                 <button>
